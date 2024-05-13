@@ -39,13 +39,9 @@ class DashboardFragment : Fragment() {
         val dashboardViewModel =
             ViewModelProvider(this).get(DashboardViewModel::class.java)
 
+
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
 
         mAuth = FirebaseAuth.getInstance()
         mDbRef = FirebaseDatabase.getInstance().getReference()

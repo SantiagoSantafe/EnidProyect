@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context=".ui.chat.ChatActivity">
+
+    <!-- Lista de Mensajes -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatRecyclerView"
+        android:layout_above="@id/message_input_container"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        app:layout_constraintBottom_toTopOf="@id/message_input_container" />
+
+    <!-- Contenedor de Entrada de Mensaje -->
+    <LinearLayout
+        android:id="@+id/message_input_container"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@drawable/input_container_background"
+        android:elevation="4dp"
+        android:weightSum="100">
+
+        <!-- Campo de Entrada de Mensaje -->
+        <EditText
+            android:id="@+id/messageBox"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="85"
+            android:background="@drawable/message_box_background"
+            android:hint="Escriba su mensaje..."
+            android:padding="10dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical" />
+
+        <!-- Botón de Enviar -->
+        <ImageView
+            android:id="@+id/sendButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="15"
+            android:src="@drawable/enviar"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="10dp"
+            android:tint="@color/primaryColor"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
+
+</RelativeLayout>

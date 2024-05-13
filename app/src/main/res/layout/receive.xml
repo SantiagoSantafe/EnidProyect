@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <!-- Contenedor del Mensaje Recibido -->
+    <RelativeLayout
+        android:id="@+id/message_container"
+        android:layout_width="217dp"
+        android:layout_height="79dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/receive_message_background"
+        android:elevation="2dp"
+        android:padding="10dp">
+
+        <!-- Texto del Mensaje Recibido -->
+        <TextView
+            android:id="@+id/txt_receive_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Este es el mensaje recibido"
+            android:textColor="@color/darkGreen"
+            android:textSize="16sp" />
+
+        <!-- Hora del Mensaje -->
+        <TextView
+            android:id="@+id/txt_receive_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_receive_message"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:text="12:34 PM"
+            android:textColor="@color/gray"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
