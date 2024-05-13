@@ -42,11 +42,6 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-
         mAuth = FirebaseAuth.getInstance()
         mDbRef = FirebaseDatabase.getInstance().getReference()
         userList = ArrayList()
@@ -54,7 +49,7 @@ class DashboardFragment : Fragment() {
         userRecyclerView = binding.userRecycler
         userRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         userRecyclerView.adapter = adapter
-        //Aqui tengo que añadir la logica para
+        //Aqui tengo que añadir la logica para que solo aparezcan los que le han enviado mensajes
         mDbRef.child("user").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
