@@ -3,5 +3,6 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Chat</string>
-    <string name="title_notifications">Notificaciones</string>
+    <string name="title_perfil">Perfil</string>
+    <string name="profile_image_desc">Foto de perfil</string>
 </resources>
