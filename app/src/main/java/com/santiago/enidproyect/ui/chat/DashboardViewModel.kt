@@ -1,4 +1,4 @@
-package com.santiago.enidproyect.ui.dashboard
+package com.santiago.enidproyect.ui.chat
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

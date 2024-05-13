@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.santiago.enidproyect.ui.dashboard.DashboardFragment"
+        android:name="com.santiago.enidproyect.ui.chat.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
