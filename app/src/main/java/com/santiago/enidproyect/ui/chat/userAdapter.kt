@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.santiago.enidproyect.R
 
@@ -31,7 +33,7 @@ class userAdapter(val context: Context, val userList: ArrayList<User>):
         val storage = FirebaseStorage.getInstance()
         val storageRef = storage.getReferenceFromUrl("gs://enidproyect.appspot.com")
         val pathReference = storageRef.child("images/${currentUser.email}.jpg")
-
+        val mDbRef: DatabaseReference = FirebaseDatabase.getInstance().getReference()
 
         pathReference.downloadUrl.addOnSuccessListener { uri ->
             uri?.let {
@@ -52,6 +54,18 @@ class userAdapter(val context: Context, val userList: ArrayList<User>):
             Log.e("userAdapter", "Error al descargar la imagen: ${exception.message}")
             holder.imagenUsuario?.setImageResource(R.drawable.ic_profile_placeholder)
         }
+        mDbRef.child("chats").child(currentUser.uid!!).child("messages").get()
+            .addOnSuccessListener { dataSnapshot ->
+                if (dataSnapshot.exists() && dataSnapshot.hasChildren()) {
+                    val lastMessageId = dataSnapshot.children.last().key
+                    val lastMessageRef = mDbRef.child("chats").child(currentUser.uid!!).child("messages").child(lastMessageId!!)
+
+                    lastMessageRef.get().addOnSuccessListener { lastMessageSnapshot ->
+                        val lastMessageContent = lastMessageSnapshot.child("content").value as String
+                        holder.lastMessage.text = lastMessageContent
+                    }
+                }
+            }
 
 
 
@@ -65,5 +79,6 @@ class userAdapter(val context: Context, val userList: ArrayList<User>):
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val textName = itemView.findViewById<TextView>(R.id.txt_name)
         val imagenUsuario =itemView.findViewById<ImageView>(R.id.img_user)
+        val lastMessage = itemView.findViewById<TextView>(R.id.txt_last_message)
     }
 }

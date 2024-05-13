@@ -38,18 +38,21 @@
         android:textColor="?android:textColorPrimary" />
 
     <!-- Hora del Último Mensaje -->
+
+    <!-- Último Mensaje del Usuario -->
+
     <TextView
         android:id="@+id/txt_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignTop="@id/txt_name"
-        android:layout_marginEnd="8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="7dp"
         android:text="12:34 PM"
-        android:textSize="14sp"
-        android:textColor="?android:textColorSecondary" />
+        android:textColor="?android:textColorSecondary"
+        android:textSize="14sp" />
 
-    <!-- Último Mensaje del Usuario -->
     <TextView
         android:id="@+id/txt_last_message"
         android:layout_width="0dp"

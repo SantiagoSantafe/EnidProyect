@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.santiago.enidproyect.R
+import java.text.SimpleDateFormat
 
 class MessageAdapter(val context: Context,val messageList: ArrayList<Message> ):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -31,8 +32,12 @@ class MessageAdapter(val context: Context,val messageList: ArrayList<Message> ):
         val currentMessage = messageList[position]
         if(holder.javaClass == SentViewHolder::class.java){
             val viewHolder = holder as SentViewHolder
+            val timestamp = Timestamp.now()
+            val date = timestamp.toDate()
+            val format = SimpleDateFormat("hh:mm")
+            val formattedTime = format.format(date)
             holder.sentMessage.text = currentMessage.message
-            holder.sentTime.text = Timestamp.now().toString()
+            holder.sentTime.text = formattedTime
         }else{
             val viewHolder = holder as ReceiveViewHolder
             holder.receiveMessage.text = currentMessage.message
