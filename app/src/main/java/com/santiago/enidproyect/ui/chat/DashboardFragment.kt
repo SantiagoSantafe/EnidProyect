@@ -1,6 +1,7 @@
 package com.santiago.enidproyect.ui.chat
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,9 +27,6 @@ class DashboardFragment : Fragment() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
 
-    var receiveRoom: String? = null
-    var senderRoom: String? = null
-
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -46,9 +44,10 @@ class DashboardFragment : Fragment() {
         mAuth = FirebaseAuth.getInstance()
         mDbRef = FirebaseDatabase.getInstance().getReference()
         userList = ArrayList()
-        adapter = userAdapter(requireContext(), userList)
-        userRecyclerView = binding.userRecycler
-        userRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val context = this.requireContext()
+        adapter = userAdapter(context, userList)
+        userRecyclerView = _binding!!.userRecycler
+        userRecyclerView.layoutManager = LinearLayoutManager(context)
         userRecyclerView.adapter = adapter
         //Aqui tengo que añadir la logica para
         mDbRef.child("user").addValueEventListener(object: ValueEventListener {

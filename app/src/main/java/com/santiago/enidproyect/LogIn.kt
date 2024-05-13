@@ -11,6 +11,8 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.FirebaseDatabase
+import com.santiago.enidproyect.ui.chat.User
 
 class LogIn : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -63,6 +65,10 @@ class LogIn : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "signInWithCredential:success")
+                    val mDbRef = FirebaseDatabase.getInstance().getReference()
+                    val email = task.result?.user?.email ?: ""
+                    val name = task.result?.user?.displayName ?: ""
+                    mDbRef.child("user").child(auth.currentUser?.uid!!).setValue(User(name, email, auth.currentUser?.uid!!))
 
                     Menu(task.result?.user?.email ?: "")
 
