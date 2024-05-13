@@ -2,6 +2,8 @@
     <string name="app_name">enidproyect</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_dashboard">Chat</string>
+    <string name="title_perfil">Perfil</string>
+    <string name="profile_image_desc">Foto de perfil</string>
+    <string name="editar_perfil">Editar Perfil</string>
 </resources>

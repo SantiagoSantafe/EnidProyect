@@ -3,19 +3,80 @@ package com.santiago.enidproyect
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 
 class LogIn : AppCompatActivity() {
-    lateinit var googleBtn: SignInButton
+    private lateinit var googleSignInClient: GoogleSignInClient
+    lateinit var btnIniciarGoogle: SignInButton
+    private lateinit var auth: FirebaseAuth
+    lateinit var clientWebID:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        clientWebID = "322403123957-8t6g2r7qrcbrfn61rk8a5de5d8tp3u26.apps.googleusercontent.com"
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
+        auth = FirebaseAuth.getInstance()
 
-        googleBtn = findViewById(R.id.sign_in_button)
+        btnIniciarGoogle = findViewById(R.id.sign_in_button)
 
-        googleBtn.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(clientWebID)
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        btnIniciarGoogle.setOnClickListener {
+            signInGmail()
         }
+    }
+    companion object {
+        private const val RC_SIGN_IN = 9001
+        private const val TAG = "GoogleActivity"
+    }
+    private fun signInGmail() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                Log.w(TAG, "Google sign in failed", e)
+            }
+        }
+    }
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "signInWithCredential:success")
+
+                    Menu(task.result?.user?.email ?: "")
+
+
+                } else {
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                }
+            }
+    }
+    private fun Menu(email:String) {
+        val homeIntent = Intent(this, HomeActivity::class.java).apply {
+            putExtra("email", email)
+
+        }
+        startActivity(homeIntent)
     }
 }
