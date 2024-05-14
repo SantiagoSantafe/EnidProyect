@@ -40,10 +40,12 @@ class userAdapter(val context: Context, val userList: ArrayList<User>):
         var senderRoom = receiverUid + senderUid
         var receiveRoom = senderUid + receiverUid
         pathReference.downloadUrl.addOnSuccessListener { uri ->
-            uri?.let {
+            uri?.let { safeUri ->
                 holder.imagenUser?.let { imageView ->
                     Glide.with(this.context)
-                        .load(it.toString())
+                        .load(safeUri.toString())
+                        .placeholder(R.drawable.ic_profile_placeholder)  // Mostrar una imagen predeterminada durante la carga
+                        .error(R.drawable.ic_launcher_foreground)  // Mostrar una imagen de error si falla la carga
                         .into(imageView)
                 } ?: run {
                     // Manejar el caso cuando el ImageView es nulo
@@ -58,6 +60,7 @@ class userAdapter(val context: Context, val userList: ArrayList<User>):
             Log.e("userAdapter", "Error al descargar la imagen: ${exception.message}")
             holder.imagenUser?.setImageResource(R.drawable.ic_profile_placeholder)
         }
+
         // Asegúrate de que la referencia de la sala sea consistente con la forma en que guardas los mensajes
         val messageRoomRef = mDbRef.child("chats").child(senderRoom).child("messages")
 
