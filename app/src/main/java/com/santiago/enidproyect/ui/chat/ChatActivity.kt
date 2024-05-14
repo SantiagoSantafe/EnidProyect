@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -14,7 +15,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.santiago.enidproyect.R
-
+import java.text.SimpleDateFormat
 
 
 class ChatActivity : AppCompatActivity() {
@@ -63,7 +64,11 @@ class ChatActivity : AppCompatActivity() {
             })
         sendButton.setOnClickListener {
             val message = messageBox.text.toString()
-            val messageObject = Message(message,senderUid)
+            val timestamp = Timestamp.now()
+            val date = timestamp.toDate()
+            val format = SimpleDateFormat("hh:mm")
+            val formattedTime = format.format(date)
+            val messageObject = Message(message,senderUid,formattedTime)
             mDbRef.child("chats").child(senderRoom!!).child("messages").push()
                 .setValue(messageObject).addOnCompleteListener {
                     mDbRef.child("chats").child(receiveRoom!!).child("messages").push()

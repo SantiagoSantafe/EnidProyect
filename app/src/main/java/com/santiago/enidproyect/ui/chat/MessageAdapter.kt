@@ -32,12 +32,8 @@ class MessageAdapter(val context: Context,val messageList: ArrayList<Message> ):
         val currentMessage = messageList[position]
         if(holder.javaClass == SentViewHolder::class.java){
             val viewHolder = holder as SentViewHolder
-            val timestamp = Timestamp.now()
-            val date = timestamp.toDate()
-            val format = SimpleDateFormat("hh:mm")
-            val formattedTime = format.format(date)
             holder.sentMessage.text = currentMessage.message
-            holder.sentTime.text = formattedTime
+            holder.sentTime.text = currentMessage.time
         }else{
             val viewHolder = holder as ReceiveViewHolder
             holder.receiveMessage.text = currentMessage.message

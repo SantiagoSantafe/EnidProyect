@@ -9,7 +9,7 @@ class Message {
     var time: String? = null
     constructor()
 
-    constructor(message: String?, senderID: String?){
+    constructor(message: String?, senderID: String?,time: String?){
         this.message=message
         this.senderID=senderID
         this.time =time

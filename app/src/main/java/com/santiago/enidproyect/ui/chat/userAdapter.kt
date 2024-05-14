@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -34,10 +35,13 @@ class userAdapter(val context: Context, val userList: ArrayList<User>):
         val storageRef = storage.getReferenceFromUrl("gs://enidproyect.appspot.com")
         val pathReference = storageRef.child("images/${currentUser.email}.jpg")
         val mDbRef: DatabaseReference = FirebaseDatabase.getInstance().getReference()
-
+        val receiverUid = currentUser.uid
+        val senderUid = FirebaseAuth.getInstance().currentUser?.uid
+        var senderRoom = receiverUid + senderUid
+        var receiveRoom = senderUid + receiverUid
         pathReference.downloadUrl.addOnSuccessListener { uri ->
             uri?.let {
-                holder.imagenUsuario?.let { imageView ->
+                holder.imagenUser?.let { imageView ->
                     Glide.with(this.context)
                         .load(it.toString())
                         .into(imageView)
@@ -47,26 +51,34 @@ class userAdapter(val context: Context, val userList: ArrayList<User>):
                 }
             } ?: run {
                 // Manejar el caso cuando la URI es nula (el archivo no existe)
-                holder.imagenUsuario?.setImageResource(R.drawable.ic_profile_placeholder)
+                holder.imagenUser?.setImageResource(R.drawable.ic_profile_placeholder)
             }
         }.addOnFailureListener { exception ->
             // Manejar el error de descarga
             Log.e("userAdapter", "Error al descargar la imagen: ${exception.message}")
-            holder.imagenUsuario?.setImageResource(R.drawable.ic_profile_placeholder)
+            holder.imagenUser?.setImageResource(R.drawable.ic_profile_placeholder)
         }
-        mDbRef.child("chats").child(currentUser.uid!!).child("messages").get()
-            .addOnSuccessListener { dataSnapshot ->
-                if (dataSnapshot.exists() && dataSnapshot.hasChildren()) {
-                    val lastMessageId = dataSnapshot.children.last().key
-                    val lastMessageRef = mDbRef.child("chats").child(currentUser.uid!!).child("messages").child(lastMessageId!!)
+        // Asegúrate de que la referencia de la sala sea consistente con la forma en que guardas los mensajes
+        val messageRoomRef = mDbRef.child("chats").child(senderRoom).child("messages")
 
-                    lastMessageRef.get().addOnSuccessListener { lastMessageSnapshot ->
-                        val lastMessageContent = lastMessageSnapshot.child("content").value as String
-                        holder.lastMessage.text = lastMessageContent
-                    }
+        messageRoomRef.get().addOnSuccessListener { dataSnapshot ->
+            if (dataSnapshot.exists() && dataSnapshot.hasChildren()) {
+                val lastMessageSnapshot = dataSnapshot.children.last()
+
+                val messageText = lastMessageSnapshot.child("message").value?.toString() ?: "No Content"
+                holder.lastMessage.text = messageText
+
+                val timeText = if (lastMessageSnapshot.hasChild("time")) {
+                    lastMessageSnapshot.child("time").value?.toString() ?: "No Time"
+                } else {
+                    "No Time"
                 }
+                holder.time.text = timeText
+            } else {
+                holder.lastMessage.text = "No messages"
+                holder.time.text = "No Time"
             }
-
+        }
 
 
         holder.itemView.setOnClickListener {
@@ -76,9 +88,12 @@ class userAdapter(val context: Context, val userList: ArrayList<User>):
             context.startActivity(intent)
         }
     }
-    class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val textName = itemView.findViewById<TextView>(R.id.txt_name)
-        val imagenUsuario =itemView.findViewById<ImageView>(R.id.img_user)
-        val lastMessage = itemView.findViewById<TextView>(R.id.txt_last_message)
+    class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val textName: TextView = itemView.findViewById(R.id.txt_name) ?: throw IllegalStateException("TextView1 not found")
+        val imagenUser: ImageView = itemView.findViewById(R.id.img_user) ?: throw IllegalStateException("ImageView not found")
+        val lastMessage: TextView = itemView.findViewById(R.id.txt_last_message) ?: throw IllegalStateException("TextView2 not found")
+        val time: TextView = itemView.findViewById(R.id.txt_time) ?: throw IllegalStateException("TextView3 not found")
     }
+
+
 }

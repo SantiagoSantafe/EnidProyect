@@ -7,7 +7,6 @@ plugins {
 android {
     namespace = "com.santiago.enidproyect"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "com.santiago.enidproyect"
         minSdk = 28
