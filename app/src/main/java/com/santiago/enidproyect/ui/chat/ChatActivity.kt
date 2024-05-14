@@ -102,8 +102,7 @@ class ChatActivity : AppCompatActivity() {
         // Debes reemplazar esto con tu lógica para obtener datos reales, por ejemplo, desde Firebase
         val userInfo = """
         Nombre: ${userText.text}
-        Email: usuario@example.com
-        Última conexión: hace 10 minutos
+        Email: ${FirebaseAuth.getInstance().currentUser?.email}
     """.trimIndent()
 
         // Crear el constructor del diálogo
