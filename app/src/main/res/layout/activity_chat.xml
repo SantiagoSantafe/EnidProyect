@@ -7,23 +7,75 @@
     android:padding="8dp"
     tools:context=".ui.chat.ChatActivity">
 
+    <!-- Toolbar con detalles del usuario -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/chat_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/input_container_background"
+        android:elevation="4dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Botón de regreso (flecha) -->
+
+            <!-- Imagen del usuario -->
+
+            <ImageView
+                android:id="@+id/backButton"
+                android:layout_width="49dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="-14dp"
+                android:contentDescription="Devolverse al chat"
+                android:padding="20dp"
+                android:src="@drawable/backarrow" />
+
+            <ImageView
+                android:id="@+id/userImage"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/backButton"
+                android:contentDescription="Imagen Usuario"
+                android:src="@drawable/ic_profile_placeholder" />
+
+            <!-- Nombre del usuario -->
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/userImage"
+                android:layout_marginStart="10dp"
+                android:layout_centerVertical="true"
+                android:text="Nombre del Usuario"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
     <!-- Lista de Mensajes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
+        android:layout_below="@id/chat_toolbar"
         android:layout_above="@id/message_input_container"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="80dp"
-        app:layout_constraintBottom_toTopOf="@id/message_input_container" />
+        android:paddingBottom="80dp"/>
 
     <!-- Contenedor de Entrada de Mensaje -->
     <LinearLayout
         android:id="@+id/message_input_container"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:padding="8dp"
         android:background="@drawable/input_container_background"
@@ -53,9 +105,6 @@
             android:src="@drawable/enviar"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="10dp"
-            android:tint="@color/primaryColor"
             android:layout_gravity="center_vertical" />
-
     </LinearLayout>
-
 </RelativeLayout>

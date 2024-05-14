@@ -1,10 +1,14 @@
 package com.santiago.enidproyect.ui.chat
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
@@ -25,6 +29,9 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var messageAdapter: MessageAdapter
     private lateinit var messageList: ArrayList<Message>
     private lateinit var mDbRef: DatabaseReference
+    private lateinit var btnDevolverse : ImageView
+    private lateinit var userText : TextView
+
 
     var receiveRoom: String? = null
     var senderRoom: String? = null
@@ -32,13 +39,16 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+        val toolbar: Toolbar = findViewById(R.id.chat_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         val name = intent.getStringExtra("name")
         val receiverUid = intent.getStringExtra("uid")
         val senderUid = FirebaseAuth.getInstance().currentUser?.uid
         mDbRef = FirebaseDatabase.getInstance().getReference()
         senderRoom = receiverUid + senderUid
         receiveRoom = senderUid + receiverUid
-        supportActionBar?.title = name
         chatRecyclerView = findViewById(R.id.chatRecyclerView)
         messageBox = findViewById(R.id.messageBox)
         sendButton = findViewById(R.id.sendButton)
@@ -46,6 +56,15 @@ class ChatActivity : AppCompatActivity() {
         messageAdapter = MessageAdapter(this, messageList)
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
+        btnDevolverse = findViewById(R.id.backButton)
+        userText = findViewById(R.id.userName)
+        userText.text = name
+        userText.setOnClickListener {
+            showUserInfoDialog()
+        }
+        btnDevolverse.setOnClickListener {
+            finish()
+        }
 //logica data recycleview
         mDbRef.child("chats").child(senderRoom!!).child("messages")
             .addValueEventListener(object: ValueEventListener{
@@ -78,4 +97,28 @@ class ChatActivity : AppCompatActivity() {
             chatRecyclerView.scrollToPosition(messageList.size - 1)
         }
     }
+    private fun showUserInfoDialog() {
+        // Simula la obtención de información del usuario
+        // Debes reemplazar esto con tu lógica para obtener datos reales, por ejemplo, desde Firebase
+        val userInfo = """
+        Nombre: ${userText.text}
+        Email: usuario@example.com
+        Última conexión: hace 10 minutos
+    """.trimIndent()
+
+        // Crear el constructor del diálogo
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Información del Usuario")
+        builder.setMessage(userInfo)
+
+        // Agregar un botón para cerrar el diálogo
+        builder.setPositiveButton("Cerrar") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        // Mostrar el diálogo
+        builder.show()
+    }
+
+
 }
