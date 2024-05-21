@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/post_shape_background"
+    android:paddingLeft="15dp"
+    android:paddingTop="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="15dp">
+
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:clickable="true"
+            app:shapeAppearanceOverlay="@style/circular"
+            android:contextClickable="true"
+            android:src="@drawable/perfil_de_usuario_default" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre de usuario"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/date_of_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha del mensaje"
+                android:textColor="#85000000"
+                android:textSize="15sp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/ll2"
+        android:layout_height="wrap_content"
+        android:id="@+id/body_post"
+        android:layout_marginTop="10dp"
+        android:text="ESTE Es el BODY DEL POST"/>
+
+    <ImageView
+        android:id="@+id/post_image_body"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/body_post"
+        android:layout_marginHorizontal="100dp"
+        android:visibility="gone" />
+
+</RelativeLayout>
