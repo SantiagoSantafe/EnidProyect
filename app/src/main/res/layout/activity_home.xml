@@ -10,12 +10,12 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
-        android:layout_width="404dp"
-        android:layout_height="98dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Secondary_White"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@android:color/white">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/ll1"
@@ -23,29 +23,37 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/logo_menu"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
                 android:background="@color/Primary_Orange"
                 android:clickable="true"
                 android:contextClickable="true"
-                android:src="@drawable/logoenid" />
-
+                android:src="@drawable/logoenid"
+                app:shapeAppearanceOverlay="@style/circular" />
 
             <Space
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
+            <ImageView
+                android:id="@+id/search_btn"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:contextClickable="true"
+                android:src="@drawable/search_icon"
+                android:textAlignment="gravity" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profile_image_btn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
                 android:clickable="true"
                 android:contextClickable="true"
                 android:src="@drawable/perfil_de_usuario_default"
@@ -53,6 +61,20 @@
         </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
+    <EditText
+        android:id="@+id/search_bar"
+        android:layout_below="@+id/my_toolbar"
+        android:background="@drawable/background_boxtext_chat"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="40dp"
+        android:paddingLeft="10dp"
+        android:hint="Ingrese nombre de usuario"
+        android:layout_weight="60"
+        android:visibility="gone"
+        tools:ignore="MissingConstraints" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"

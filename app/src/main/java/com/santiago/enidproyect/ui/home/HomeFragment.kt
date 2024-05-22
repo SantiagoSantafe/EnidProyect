@@ -40,7 +40,6 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var goProfile: ImageView
     private lateinit var sentPost: ImageView
     private lateinit var textPost: MultiAutoCompleteTextView
     private lateinit var picture_btn: ImageView
@@ -98,7 +97,6 @@ class HomeFragment : Fragment() {
 
     private fun initializeViews(root: View) {
         profile_image = root.findViewById(R.id.profile_image)
-        goProfile = root.findViewById(R.id.profile_image_btn)
         sentPost = root.findViewById(R.id.sent_btn)
         textPost = root.findViewById(R.id.multiAutoCompleteTextView)
         picture_btn = root.findViewById(R.id.camara_btn)
@@ -124,15 +122,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadProfileImage() {
-        storageRef.child("users_profile_imges/${mAuth.currentUser?.email}.jpg").downloadUrl.addOnSuccessListener { uri ->
+        storageRef.child("images/${mAuth.currentUser?.email}.jpg").downloadUrl.addOnSuccessListener { uri ->
             Glide.with(requireContext())
                 .load(uri)
                 .into(profile_image)
-        }
-        storageRef.child("users_profile_imges/${mAuth.currentUser?.email}.jpg").downloadUrl.addOnSuccessListener { uri ->
-            Glide.with(requireContext())
-                .load(uri)
-                .into(goProfile)
         }
     }
 

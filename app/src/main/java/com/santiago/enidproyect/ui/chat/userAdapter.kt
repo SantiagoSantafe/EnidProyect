@@ -97,6 +97,11 @@ class userAdapter(val context: Context, val userList: ArrayList<User>):
         val lastMessage: TextView = itemView.findViewById(R.id.txt_last_message) ?: throw IllegalStateException("TextView2 not found")
         val time: TextView = itemView.findViewById(R.id.txt_time) ?: throw IllegalStateException("TextView3 not found")
     }
+    fun update(filteredList: List<User>) {
+        userList.clear()  // Clear the existing data
+        userList.addAll(filteredList)  // Add the filtered data
+        notifyDataSetChanged()  // Notify the adapter about the data change
+    }
 
 
 }

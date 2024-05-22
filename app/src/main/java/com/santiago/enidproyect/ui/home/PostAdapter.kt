@@ -28,7 +28,7 @@ class PostAdapter (val context: Context, val postList: ArrayList<Post>):
             holder.textName.text = currentPost.name
             holder.fechaPost.text = currentPost.date
             holder.textPost.text = currentPost.post
-            storageRef.child("users_profile_imges/${currentPost.email}.jpg").downloadUrl.addOnSuccessListener { uri ->
+            storageRef.child("images/${currentPost.email}.jpg").downloadUrl.addOnSuccessListener { uri ->
                 Glide.with(context)
                     .load(uri)
                     .into(holder.foto_perfil)
