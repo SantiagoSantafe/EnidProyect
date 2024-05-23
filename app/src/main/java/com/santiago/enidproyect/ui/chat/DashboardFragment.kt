@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.GestureDetector
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -87,6 +89,19 @@ class DashboardFragment : Fragment() {
                 search_bar.addTextChangedListener(textWatcher)
             }
         }
+
+        userRecyclerView.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (search_bar.visibility == View.VISIBLE) {
+                    search_bar.visibility = View.GONE
+                    search_bar.setText("")
+                }
+            }
+            false
+        }
+
+
+
         //Aqui tengo que añadir la logica para
         mDbRef.child("user").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
