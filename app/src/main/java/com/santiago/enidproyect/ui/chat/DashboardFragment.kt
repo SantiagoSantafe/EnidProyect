@@ -103,20 +103,39 @@ class DashboardFragment : Fragment() {
 
 
         //Aqui tengo que añadir la logica para
-        mDbRef.child("user").addValueEventListener(object: ValueEventListener {
+        mDbRef.child("chats").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
-                for(postsnapshot in snapshot.children){
-                    val currentUser = postsnapshot.getValue(User::class.java)
-                    if(mAuth.currentUser?.uid != currentUser?.uid){
-                        userList.add(currentUser!!)
+                val currentUserID = mAuth.currentUser?.uid
+                for (chatSnapshot in snapshot.children) {
+                    val chatId = chatSnapshot.key
+                    if (chatId?.contains(currentUserID!!) == true) {
+                        val otherUserId = if (chatId.startsWith(currentUserID.toString())) currentUserID?.let {
+                            chatId.substring(
+                                it.length)
+                        } else chatId.substring(0, chatId.length - currentUserID!!.length)
+                        if (otherUserId != null) {
+                            mDbRef.child("user").child(otherUserId).get().addOnSuccessListener {
+                                val user = it.getValue(User::class.java)
+                                if (user != null && userList.none { it.uid == user.uid }) {
+                                    userList.add(user)
+                                    adapter.notifyDataSetChanged()  // Mueve notifyDataSetChanged() aquí
+                                }
+                            }
+                        }
                     }
                 }
-                adapter.notifyDataSetChanged()
             }
             override fun onCancelled(error: DatabaseError) {
             }
         })
+
+
+
+
+
+
+
         return root
     }
 
