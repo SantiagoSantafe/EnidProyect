@@ -9,12 +9,14 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -22,6 +24,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import com.santiago.enidproyect.databinding.ActivityHomeBinding
 import com.santiago.enidproyect.ui.chat.DashboardFragment
 import com.santiago.enidproyect.ui.chat.User
@@ -66,6 +69,17 @@ class HomeActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        val storageRef = FirebaseStorage.getInstance().reference
+        storageRef.child("images/${mAuth.currentUser?.email}.jpg").downloadUrl.addOnSuccessListener { uri ->
+            Glide.with(this)
+                .load(uri)
+                .into(binding.profileImageBtn)
+        }
+
+        binding.profileImageBtn.setOnClickListener {
+            navController.popBackStack()
+            navController.navigate(R.id.navigation_notifications)
+        }
         if (mAuth.currentUser == null) {
             val intent = Intent(this, LogIn::class.java)
             startActivity(intent)
